@@ -1,451 +1,62 @@
-<!DOCTYPE html>
-<html lang="th">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>แบบฟอร์มขอข้อมูลเพิ่มเติมสำหรับใบเสนอราคา</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --paper:#EEF0EA;
-    --paper-2:#E4E7DD;
-    --ink:#16324F;
-    --ink-soft:#3D5872;
-    --line:#C7CCBC;
-    --accent:#C1440E;
-    --accent-soft:#F1DCCF;
-    --ok:#3F7859;
-    --white:#FBFBF8;
-    --radius:2px;
-    --mono:'IBM Plex Mono',monospace;
-    --disp:'Space Grotesk',sans-serif;
-    --body:'IBM Plex Sans Thai','IBM Plex Sans',sans-serif;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--body);
-    font-size:15px;
-    line-height:1.55;
-    background-image:
-      linear-gradient(var(--paper-2) 1px,transparent 1px),
-      linear-gradient(90deg,var(--paper-2) 1px,transparent 1px);
-    background-size:32px 32px;
-  }
-  @media (prefers-reduced-motion:no-preference){
-    .reveal{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease;}
-    .reveal.in{opacity:1;transform:translateY(0);}
-  }
-
-  /* ---------- ruler ---------- */
-  .ruler{
-    height:18px;
-    display:flex;
-    align-items:flex-end;
-    overflow:hidden;
-    border-bottom:1px solid var(--line);
-    background:var(--white);
-  }
-  .ruler span{
-    flex:0 0 auto;width:16px;height:6px;border-left:1px solid var(--line);
-  }
-  .ruler span:nth-child(5n+1){height:10px;}
-
-  /* ---------- header / title block ---------- */
-  .sheet-head{
-    max-width:1040px;margin:0 auto;padding:28px 24px 0;
-    display:grid;grid-template-columns:1fr 260px;gap:18px;
-  }
-  @media (max-width:720px){ .sheet-head{grid-template-columns:1fr;} }
-  .titlebox{
-    border:1.5px solid var(--ink);background:var(--white);
-    padding:18px 22px 20px;
-  }
-  .titlebox .eyebrow{
-    font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent);
-    text-transform:uppercase;margin:0 0 8px;
-  }
-  .titlebox h1{
-    font-family:var(--disp);font-size:26px;line-height:1.2;margin:0 0 6px;font-weight:700;color:var(--ink);
-  }
-  .titlebox p{margin:0;color:var(--ink-soft);font-size:13.5px;}
-  .stampbox{
-    border:1.5px solid var(--ink);background:var(--white);
-    font-family:var(--mono);font-size:11px;color:var(--ink-soft);
-  }
-  .stampbox .row{
-    display:flex;justify-content:space-between;padding:7px 12px;border-bottom:1px solid var(--line);
-  }
-  .stampbox .row:last-child{border-bottom:none;}
-  .stampbox .row b{color:var(--ink);font-weight:600;letter-spacing:.02em;}
-  .stampbox .row span.val{color:var(--accent);max-width:150px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-
-  /* ---------- progress nav ---------- */
-  .progress-wrap{
-    max-width:1040px;margin:22px auto 0;padding:0 24px;
-  }
-  .progress{
-    display:flex;border:1px solid var(--line);background:var(--white);
-    overflow-x:auto;
-  }
-  .progress button{
-    flex:1 0 auto;min-width:118px;background:none;border:none;border-right:1px solid var(--line);
-    font-family:var(--mono);font-size:11px;color:var(--ink-soft);padding:10px 8px;cursor:pointer;
-    text-align:left;letter-spacing:.02em;transition:background .2s,color .2s;
-  }
-  .progress button:last-child{border-right:none;}
-  .progress button b{display:block;font-family:var(--disp);font-size:12.5px;color:var(--ink);font-weight:600;margin-top:2px;}
-  .progress button.active{background:var(--ink);color:var(--accent-soft);}
-  .progress button.active b{color:var(--white);}
-  .progress button.done{color:var(--ok);}
-
-  /* ---------- form body ---------- */
-  main{max-width:1040px;margin:0 auto;padding:26px 24px 80px;}
-  section.card{
-    background:var(--white);border:1px solid var(--line);margin-bottom:22px;
-    scroll-margin-top:90px;
-  }
-  section.card .card-head{
-    display:flex;align-items:baseline;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line);
-    background:linear-gradient(90deg,var(--ink) 0 4px,transparent 4px);
-  }
-  .card-head .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.05em;}
-  .card-head h2{font-family:var(--disp);font-size:17px;margin:0;font-weight:600;color:var(--ink);}
-  .card-head span.en{font-size:12px;color:var(--ink-soft);font-style:italic;margin-left:2px;}
-  .card-body{padding:18px 20px 22px;display:grid;grid-template-columns:1fr 1fr;gap:16px 18px;}
-  @media (max-width:640px){ .card-body{grid-template-columns:1fr;} }
-  .field{display:flex;flex-direction:column;gap:6px;}
-  .field.full{grid-column:1/-1;}
-  .field label{font-size:13px;color:var(--ink-soft);font-weight:600;display:flex;gap:4px;}
-  .field label .req{color:var(--accent);font-family:var(--mono);}
-  .field input, .field select, .field textarea{
-    font-family:var(--body);font-size:14px;color:var(--ink);
-    border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);
-    padding:9px 10px;outline:none;transition:border-color .15s,background .15s;
-  }
-  .field textarea{resize:vertical;min-height:64px;}
-  .field input:focus,.field select:focus,.field textarea:focus{
-    border-color:var(--ink);background:var(--white);
-  }
-  .field .hint{font-size:11.5px;color:#8A8F80;font-family:var(--mono);}
-  .field .err{font-size:12px;color:var(--accent);display:none;font-weight:600;}
-  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--accent);background:#FBF2ED;}
-  .field.invalid .err{display:block;}
-
-  .upload{
-    border:1.5px dashed var(--line);background:var(--paper);padding:16px;text-align:center;
-    font-size:12.5px;color:var(--ink-soft);border-radius:var(--radius);cursor:pointer;transition:border-color .15s;
-  }
-  .upload:hover{border-color:var(--ink);}
-  .upload b{display:block;color:var(--ink);font-family:var(--disp);font-size:13px;margin-bottom:3px;}
-  .upload input{display:none;}
-  .upload .fname{margin-top:6px;font-family:var(--mono);color:var(--ok);}
-
-  /* ---------- submit ---------- */
-  .submit-bar{
-    display:flex;justify-content:space-between;align-items:center;gap:16px;
-    padding:20px 22px;background:var(--ink);border:1px solid var(--ink);flex-wrap:wrap;
-  }
-  .submit-bar p{margin:0;color:var(--accent-soft);font-size:12.5px;font-family:var(--mono);}
-  .btn{
-    font-family:var(--disp);font-weight:600;font-size:14px;border:none;cursor:pointer;
-    padding:12px 22px;border-radius:var(--radius);transition:transform .12s,opacity .12s;
-  }
-  .btn:active{transform:scale(.97);}
-  .btn-primary{background:var(--accent);color:var(--white);}
-  .btn-primary:hover{opacity:.92;}
-
-  /* ---------- success overlay ---------- */
-  .overlay{
-    position:fixed;inset:0;background:rgba(22,50,79,.72);display:none;
-    align-items:center;justify-content:center;padding:20px;z-index:50;
-  }
-  .overlay.show{display:flex;}
-  .stampcard{
-    background:var(--white);border:2px solid var(--ink);max-width:460px;width:100%;
-    padding:26px 26px 22px;position:relative;
-  }
-  .stampcard .stamp{
-    position:absolute;top:-16px;right:22px;border:3px solid var(--ok);color:var(--ok);
-    font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.1em;
-    padding:5px 10px;transform:rotate(-6deg);background:var(--white);
-  }
-  .stampcard h3{font-family:var(--disp);margin:6px 0 10px;font-size:19px;color:var(--ink);}
-  .stampcard p{font-size:13.5px;color:var(--ink-soft);margin:0 0 16px;}
-  .stampcard .actions{display:flex;gap:10px;flex-wrap:wrap;}
-  .btn-ghost{background:none;border:1.5px solid var(--ink);color:var(--ink);}
-  .btn-ghost:hover{background:var(--paper);}
-  .close-x{position:absolute;top:10px;right:12px;background:none;border:none;font-size:18px;color:var(--ink-soft);cursor:pointer;}
-
-  footer{text-align:center;padding:20px;font-family:var(--mono);font-size:11px;color:var(--ink-soft);}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="UMC Die Casting — precision aluminium and zinc components from design to delivery.">
+  <title>UMC Die Casting | Precision. From Mold to Market.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="UMC Die Casting home"><span class="brand-mark">UMC</span><span><strong>DIE CASTING</strong><small>THAILAND · EST. 1971</small></span></a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav">Menu</button>
+    <nav id="main-nav" class="main-nav">
+      <a class="active" href="#home">Home</a><a href="#capabilities">Capabilities</a><a href="#industries">Industries</a><a href="#quality">Quality</a><a href="#contact">Contact</a>
+      <a class="nav-cta" href="rfq.html">Request a quote <span>↗</span></a>
+    </nav>
+  </header>
 
-<div class="ruler" id="ruler"></div>
-
-<div class="sheet-head">
-  <div class="titlebox reveal">
-    <p class="eyebrow">Request for Quotation · เอกสารประกอบการเสนอราคา</p>
-    <h1>แบบฟอร์มขอข้อมูลเพิ่มเติมสำหรับใบเสนอราคา</h1>
-    <p>กรุณากรอกรายละเอียดให้ครบถ้วน เพื่อให้ทีมงานจัดทำใบเสนอราคาได้อย่างถูกต้องและรวดเร็ว</p>
-  </div>
-  <div class="stampbox reveal">
-    <div class="row"><b>RFQ NO.</b><span class="val" id="rfqNo">—</span></div>
-    <div class="row"><b>DATE</b><span class="val" id="rfqDate">—</span></div>
-    <div class="row"><b>PART NAME</b><span class="val" id="rfqPart">—</span></div>
-    <div class="row"><b>REV.</b><span class="val">A</span></div>
-  </div>
-</div>
-
-<div class="progress-wrap">
-  <nav class="progress" id="progressNav"></nav>
-</div>
-
-<form id="rfqForm">
-<main>
-
-  <section class="card reveal" id="sec-1" data-title="ข้อมูลลูกค้า" data-en="Customer Information">
-    <div class="card-head"><span class="num">01</span><h2>ข้อมูลลูกค้า</h2><span class="en">Customer Information</span></div>
-    <div class="card-body">
-      <div class="field"><label>ชื่อบริษัท <span class="req">*</span></label>
-        <input type="text" required data-field="company"><span class="err">กรุณากรอกชื่อบริษัท</span></div>
-      <div class="field"><label>ชื่อผู้ติดต่อ / ตำแหน่ง <span class="req">*</span></label>
-        <input type="text" required data-field="contact"><span class="err">กรุณากรอกชื่อผู้ติดต่อ</span></div>
-      <div class="field"><label>อีเมล <span class="req">*</span></label>
-        <input type="email" required data-field="email"><span class="err">กรุณากรอกอีเมลให้ถูกต้อง</span></div>
-      <div class="field"><label>เบอร์โทรศัพท์ <span class="req">*</span></label>
-        <input type="tel" required data-field="phone"><span class="err">กรุณากรอกเบอร์โทรศัพท์</span></div>
-      <div class="field full"><label>ประเทศ / เมือง</label>
-        <input type="text" data-field="location" placeholder="เช่น กรุงเทพฯ, ประเทศไทย"></div>
-    </div>
-  </section>
-
-  <section class="card reveal" id="sec-2" data-title="ข้อมูลชิ้นงาน / สินค้า" data-en="Part / Product Information">
-    <div class="card-head"><span class="num">02</span><h2>ข้อมูลชิ้นงาน / สินค้า</h2><span class="en">Part / Product Information</span></div>
-    <div class="card-body">
-      <div class="field"><label>ชื่อชิ้นงาน (Part Name) <span class="req">*</span></label>
-        <input type="text" required data-field="partName"><span class="err">กรุณากรอกชื่อชิ้นงาน</span></div>
-      <div class="field"><label>หมายเลขชิ้นงาน / แบบ (Part No. / Drawing No.)</label>
-        <input type="text" data-field="partNo"></div>
-      <div class="field"><label>วัสดุ (Material) <span class="req">*</span></label>
-        <input type="text" required placeholder="เช่น SS304, Aluminum A6061, ABS" data-field="material">
-        <span class="err">กรุณากรอกวัสดุ</span></div>
-      <div class="field"><label>น้ำหนักชิ้นงาน (Part Weight)</label>
-        <input type="text" placeholder="เช่น 250 g" data-field="weight"></div>
-      <div class="field"><label>ขนาดชิ้นงาน (Dimensions)</label>
-        <input type="text" placeholder="L x W x H (mm)" data-field="dimensions"></div>
-      <div class="field"><label>การเคลือบผิว / Finishing</label>
-        <input type="text" placeholder="เช่น Anodize, Painting, Plating" data-field="finishing"></div>
-      <div class="field full">
-        <label>แบบ 2D / 3D (Drawing File)</label>
-        <label class="upload" id="uploadBox">
-          <b>คลิกเพื่อแนบไฟล์แบบ</b>
-          รองรับ PDF, DWG, STEP, JPG (ไม่บังคับ)
-          <input type="file" id="fileInput">
-          <div class="fname" id="fname"></div>
-        </label>
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Precision die casting partner</p>
+        <h1>From a good drawing<br>to a <em>great</em> component.</h1>
+        <p class="hero-text">One integrated team for aluminium and zinc die-casting — mold design, casting, machining, finishing and assembly.</p>
+        <div class="hero-actions"><a class="button button-primary" href="rfq.html">Start an RFQ <span>→</span></a><a class="text-link" href="#capabilities">Explore our capabilities <span>↓</span></a></div>
       </div>
-    </div>
-  </section>
+      <div class="hero-image reveal"><img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1400&q=85" alt="Engineer inspecting a precision manufactured component"><div class="hero-tag"><b>50+</b><span>years of<br>manufacturing</span></div></div>
+    </section>
 
-  <section class="card reveal" id="sec-3" data-title="ปริมาณและการสั่งซื้อ" data-en="Volume & Purchasing">
-    <div class="card-head"><span class="num">03</span><h2>ปริมาณและการสั่งซื้อ</h2><span class="en">Volume & Purchasing</span></div>
-    <div class="card-body">
-      <div class="field"><label>ปริมาณต่อครั้ง (Order Quantity / Lot Size) <span class="req">*</span></label>
-        <input type="text" required data-field="lotSize"><span class="err">กรุณากรอกปริมาณต่อครั้ง</span></div>
-      <div class="field"><label>ปริมาณต่อเดือน / ปี (Monthly / Annual Volume)</label>
-        <input type="text" data-field="volume"></div>
-      <div class="field"><label>ความถี่ในการสั่งซื้อ (Purchasing Frequency)</label>
-        <select data-field="frequency">
-          <option value="">— เลือก —</option>
-          <option>รายสัปดาห์</option><option>รายเดือน</option><option>รายไตรมาส</option>
-          <option>ไม่สม่ำเสมอ / ตามโครงการ</option><option>ครั้งเดียว</option>
-        </select></div>
-      <div class="field"><label>ระยะเวลาโครงการ (Project Duration / Life Cycle)</label>
-        <input type="text" data-field="duration"></div>
-    </div>
-  </section>
+    <section class="statement section-pad">
+      <p class="eyebrow">The UMC advantage</p>
+      <div class="statement-grid"><h2>Complex metal parts,<br><em>made straightforward.</em></h2><p>We bring the whole process together under one roof, so your team gets fewer hand-offs, better process control and a clear route from first sample to stable production.</p></div>
+      <div class="stat-row"><div><b>1971</b><span>Established in Thailand</span></div><div><b>01</b><span>Integrated production partner</span></div><div><b>∞</b><span>Commitment to continuous improvement</span></div></div>
+    </section>
 
-  <section class="card reveal" id="sec-4" data-title="การใช้งานผลิตภัณฑ์" data-en="Product Function / Application">
-    <div class="card-head"><span class="num">04</span><h2>การใช้งานผลิตภัณฑ์</h2><span class="en">Product Function / Application</span></div>
-    <div class="card-body">
-      <div class="field full"><label>หน้าที่การใช้งาน (Function / Application) <span class="req">*</span></label>
-        <textarea required data-field="function"></textarea><span class="err">กรุณาระบุหน้าที่การใช้งาน</span></div>
-      <div class="field"><label>อุตสาหกรรมที่นำไปใช้ (Industry / End Use)</label>
-        <input type="text" data-field="industry"></div>
-      <div class="field"><label>สภาวะการใช้งาน (Operating Condition)</label>
-        <input type="text" placeholder="เช่น อุณหภูมิ, แรงดัน" data-field="condition"></div>
-    </div>
-  </section>
+    <section id="capabilities" class="capabilities section-pad dark-section">
+      <div class="section-head"><div><p class="eyebrow">What we do</p><h2>One process.<br>One accountable partner.</h2></div><p>Built to help OEM teams solve the practical details behind a reliable casting program.</p></div>
+      <div class="cap-grid">
+        <article><span>01</span><h3>Mold development</h3><p>Design-for-manufacture review, tooling development and a practical route to repeatable output.</p></article>
+        <article><span>02</span><h3>Die casting</h3><p>High-pressure and gravity casting for aluminium and zinc components with demanding geometries.</p></article>
+        <article><span>03</span><h3>Precision machining</h3><p>Secondary operations and critical features managed within the same production flow.</p></article>
+        <article><span>04</span><h3>Finish &amp; assembly</h3><p>Surface treatment, assembly and final inspection prepared for your downstream operation.</p></article>
+      </div>
+    </section>
 
-  <section class="card reveal" id="sec-5" data-title="เงื่อนไขทางการค้า" data-en="Commercial Terms">
-    <div class="card-head"><span class="num">05</span><h2>เงื่อนไขทางการค้า</h2><span class="en">Commercial Terms</span></div>
-    <div class="card-body">
-      <div class="field"><label>เงื่อนไขการส่งมอบ / Incoterms <span class="req">*</span></label>
-        <select required data-field="incoterms">
-          <option value="">— เลือก —</option>
-          <option>EXW</option><option>FOB</option><option>CIF</option><option>DDP</option><option>อื่นๆ</option>
-        </select><span class="err">กรุณาเลือกเงื่อนไขการส่งมอบ</span></div>
-      <div class="field"><label>ตลาดจำหน่าย / ประเทศปลายทาง (Sales Market) <span class="req">*</span></label>
-        <input type="text" required data-field="market"><span class="err">กรุณากรอกตลาดจำหน่าย</span></div>
-      <div class="field"><label>เงื่อนไขการชำระเงิน (Payment Terms)</label>
-        <input type="text" data-field="payment"></div>
-      <div class="field"><label>ราคาเป้าหมาย (Target Price, ถ้ามี)</label>
-        <input type="text" data-field="targetPrice"></div>
-    </div>
-  </section>
+    <section class="process section-pad"><p class="eyebrow">A clear path to production</p><div class="process-line"><div><i>01</i><h3>Brief</h3><p>Share the part, volume and target.</p></div><div><i>02</i><h3>Review</h3><p>We assess manufacturability.</p></div><div><i>03</i><h3>Develop</h3><p>Tooling, samples and validation.</p></div><div><i>04</i><h3>Deliver</h3><p>Controlled serial production.</p></div></div><a class="button button-outline" href="rfq.html">Tell us about your part <span>→</span></a></section>
 
-  <section class="card reveal" id="sec-6" data-title="ข้อมูลเพิ่มเติม" data-en="Additional Information">
-    <div class="card-head"><span class="num">06</span><h2>ข้อมูลเพิ่มเติม</h2><span class="en">Additional Information</span></div>
-    <div class="card-body">
-      <div class="field"><label>มาตรฐาน / การรับรองที่ต้องการ</label>
-        <input type="text" placeholder="เช่น ISO, RoHS, REACH" data-field="certification"></div>
-      <div class="field"><label>ข้อกำหนดพิเศษ</label>
-        <input type="text" data-field="special"></div>
-      <div class="field full"><label>หมายเหตุอื่น ๆ</label>
-        <textarea data-field="remarks"></textarea></div>
-    </div>
-  </section>
+    <section id="industries" class="industries"><div class="industry-image"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=85" alt="Automotive manufacturing detail"></div><div class="industry-copy section-pad"><p class="eyebrow">Where our parts work</p><h2>Made for the<br>real world.</h2><ul><li>Automotive &amp; mobility <span>↗</span></li><li>Industrial equipment <span>↗</span></li><li>Electrical &amp; electronics <span>↗</span></li><li>Hardware &amp; consumer products <span>↗</span></li></ul></div></section>
 
-  <div class="submit-bar reveal">
-    <p>เมื่อกดส่ง ระบบจะเปิดอีเมลของคุณพร้อมข้อมูลที่กรอกไว้ทั้งหมด</p>
-    <button type="submit" class="btn btn-primary">ส่งข้อมูล →</button>
-  </div>
+    <section id="quality" class="quality section-pad"><div><p class="eyebrow">Quality is a system</p><h2>Details matter<br>at every stage.</h2></div><div class="quality-copy"><p>Our process is structured around inspection, traceability and ongoing improvement — because quality is most valuable when it is built in, not checked in at the end.</p><div class="quality-points"><span>Process control</span><span>Dimensional inspection</span><span>Production traceability</span><span>Customer-focused response</span></div></div></section>
 
-</main>
-</form>
+    <section class="rfq-banner"><div><p class="eyebrow">Have a project in mind?</p><h2>Bring us the drawing.<br>We’ll bring the process.</h2></div><a class="button button-light" href="rfq.html">Request a quotation <span>→</span></a></section>
+  </main>
 
-<footer>QUOTATION REQUEST FORM · SHEET 1/1 · GENERATED FOR REVIEW ONLY</footer>
-
-<div class="overlay" id="overlay">
-  <div class="stampcard">
-    <button class="close-x" id="closeOverlay">✕</button>
-    <div class="stamp">APPROVED</div>
-    <h3>ข้อมูลครบถ้วนแล้ว</h3>
-    <p>กดปุ่มด้านล่างเพื่อเปิดอีเมลพร้อมข้อมูลที่กรอกไว้ หรือคัดลอกข้อมูลไปวางในที่อื่น</p>
-    <div class="actions">
-      <button type="button" class="btn btn-primary" id="mailtoBtn">เปิดอีเมล</button>
-      <button type="button" class="btn btn-ghost" id="copyBtn">คัดลอกข้อมูล</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  // ruler ticks
-  const ruler=document.getElementById('ruler');
-  for(let i=0;i<160;i++){const s=document.createElement('span');ruler.appendChild(s);}
-
-  // title block live values
-  document.getElementById('rfqDate').textContent=new Date().toLocaleDateString('th-TH',{year:'2-digit',month:'2-digit',day:'2-digit'});
-  document.getElementById('rfqNo').textContent='RFQ-'+Date.now().toString().slice(-6);
-  const partNameInput=document.querySelector('[data-field="partName"]');
-  partNameInput.addEventListener('input',e=>{
-    document.getElementById('rfqPart').textContent=e.target.value.trim()||'—';
-  });
-
-  // reveal on scroll
-  const revealEls=document.querySelectorAll('.reveal');
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(en=>{ if(en.isIntersecting){en.target.classList.add('in'); io.unobserve(en.target);} });
-  },{threshold:.12});
-  revealEls.forEach(el=>io.observe(el));
-
-  // progress nav build
-  const sections=[...document.querySelectorAll('section.card')];
-  const nav=document.getElementById('progressNav');
-  sections.forEach((sec,i)=>{
-    const btn=document.createElement('button');
-    btn.type='button';
-    btn.dataset.target=sec.id;
-    btn.innerHTML=(i+1).toString().padStart(2,'0')+'<b>'+sec.dataset.title+'</b>';
-    btn.addEventListener('click',()=>sec.scrollIntoView({behavior:'smooth',block:'start'}));
-    nav.appendChild(btn);
-  });
-  const navBtns=[...nav.children];
-  const navObserver=new IntersectionObserver(entries=>{
-    entries.forEach(en=>{
-      const idx=sections.indexOf(en.target);
-      if(en.isIntersecting){
-        navBtns.forEach(b=>b.classList.remove('active'));
-        navBtns[idx].classList.add('active');
-      }
-    });
-  },{threshold:.4,rootMargin:'-80px 0px -40% 0px'});
-  sections.forEach(s=>navObserver.observe(s));
-
-  // upload
-  const fileInput=document.getElementById('fileInput');
-  const fname=document.getElementById('fname');
-  fileInput.addEventListener('change',()=>{
-    fname.textContent=fileInput.files.length? '✓ '+fileInput.files[0].name : '';
-  });
-
-  // field labels map (thai) for email body
-  const fieldLabels={
-    company:'ชื่อบริษัท', contact:'ชื่อผู้ติดต่อ / ตำแหน่ง', email:'อีเมล', phone:'เบอร์โทรศัพท์', location:'ประเทศ / เมือง',
-    partName:'ชื่อชิ้นงาน (Part Name)', partNo:'หมายเลขชิ้นงาน / แบบ', material:'วัสดุ (Material)', weight:'น้ำหนักชิ้นงาน',
-    dimensions:'ขนาดชิ้นงาน', finishing:'การเคลือบผิว / Finishing',
-    lotSize:'ปริมาณต่อครั้ง', volume:'ปริมาณต่อเดือน/ปี', frequency:'ความถี่ในการสั่งซื้อ', duration:'ระยะเวลาโครงการ',
-    function:'หน้าที่การใช้งาน', industry:'อุตสาหกรรมที่นำไปใช้', condition:'สภาวะการใช้งาน',
-    incoterms:'เงื่อนไขการส่งมอบ / Incoterms', market:'ตลาดจำหน่าย', payment:'เงื่อนไขการชำระเงิน', targetPrice:'ราคาเป้าหมาย',
-    certification:'มาตรฐาน/การรับรอง', special:'ข้อกำหนดพิเศษ', remarks:'หมายเหตุ'
-  };
-
-  const form=document.getElementById('rfqForm');
-  const overlay=document.getElementById('overlay');
-  let compiledText='';
-
-  form.addEventListener('submit', e=>{
-    e.preventDefault();
-    let firstInvalid=null;
-    document.querySelectorAll('.field').forEach(f=>f.classList.remove('invalid'));
-
-    const data={};
-    document.querySelectorAll('[data-field]').forEach(inp=>{
-      const fieldWrap=inp.closest('.field');
-      if(inp.hasAttribute('required') && !inp.value.trim()){
-        fieldWrap.classList.add('invalid');
-        if(!firstInvalid) firstInvalid=inp;
-      }
-      data[inp.dataset.field]=inp.value.trim();
-    });
-
-    if(firstInvalid){
-      firstInvalid.closest('section').scrollIntoView({behavior:'smooth',block:'center'});
-      firstInvalid.focus();
-      return;
-    }
-
-    let lines=['แบบสอบถามข้อมูลเพิ่มเติมสำหรับใบเสนอราคา','RFQ No: '+document.getElementById('rfqNo').textContent,''];
-    Object.keys(fieldLabels).forEach(k=>{
-      if(data[k]) lines.push(fieldLabels[k]+': '+data[k]);
-    });
-    if(fileInput.files.length) lines.push('ไฟล์แบบที่แนบ: '+fileInput.files[0].name+' (โปรดแนบไฟล์จริงในอีเมล)');
-    compiledText=lines.join('\n');
-
-    overlay.classList.add('show');
-  });
-
-  document.getElementById('closeOverlay').addEventListener('click',()=>overlay.classList.remove('show'));
-
-  document.getElementById('mailtoBtn').addEventListener('click',()=>{
-    const subject=encodeURIComponent('ข้อมูลเพิ่มเติมสำหรับใบเสนอราคา - '+(document.querySelector('[data-field="company"]').value||''));
-    const body=encodeURIComponent(compiledText);
-    window.location.href=`mailto:?subject=${subject}&body=${body}`;
-  });
-
-  document.getElementById('copyBtn').addEventListener('click',()=>{
-    navigator.clipboard.writeText(compiledText).then(()=>{
-      const b=document.getElementById('copyBtn');
-      const old=b.textContent; b.textContent='คัดลอกแล้ว ✓';
-      setTimeout(()=>b.textContent=old,1600);
-    });
-  });
-</script>
+  <footer id="contact" class="site-footer"><div class="footer-top"><div><a class="brand footer-brand" href="index.html"><span class="brand-mark">UMC</span><span><strong>DIE CASTING</strong><small>THAILAND · EST. 1971</small></span></a><p>Precision aluminium and zinc components, from mold to market.</p></div><div><h4>Contact</h4><a href="tel:+6634490382">+66 (0) 3449 0382</a><a href="mailto:umcmark@umc-die-casting.com">umcmark@umc-die-casting.com</a></div><div><h4>Location</h4><p>Samutsakhon Industrial Estate<br>Samutsakhon, Thailand</p></div><div><h4>Start a project</h4><a class="footer-quote" href="rfq.html">Request a quote <span>↗</span></a></div></div><div class="footer-bottom"><span>© 2026 UMC Die Casting Co., Ltd.</span><span>Precision. From Mold to Market.</span></div></footer>
+  <script src="site.js"></script>
 </body>
 </html>
