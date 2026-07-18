@@ -10,7 +10,7 @@ const rfqForm = document.querySelector('#rfq-form');
 if (rfqForm) {
   const file = document.querySelector('#drawing');
   const fileName = document.querySelector('.file-name');
-  file.addEventListener('change', () => { fileName.textContent = file.files[0] ? `Selected: ${file.files[0].name}` : ''; });
+  if (file && fileName) file.addEventListener('change', () => { fileName.textContent = file.files[0] ? `Selected: ${file.files[0].name}` : ''; });
   rfqForm.addEventListener('submit', event => {
     event.preventDefault();
     const notice = document.querySelector('.form-notice');
